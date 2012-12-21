@@ -1,0 +1,3 @@
+mozart 15 25
+beethoven 0 45
+debussy 10 35

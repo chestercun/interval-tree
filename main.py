@@ -2,10 +2,11 @@ import sys
 from itree import IntervalTree
 
 def debug(obj):
-  print obj.value
+  print "%.01f" % obj.value
 
-def drop(obj):
-  print "%d %s %s" % (obj.value, obj.left, obj.right)
+def debug2(obj):
+  #print "%d %s %s" % (obj.value, obj.left, obj.right)
+  print "%.01f %s %s" % (obj.value, obj.left, obj.right)
 
 def main():
   if (len(sys.argv)>1):
@@ -20,16 +21,26 @@ def main():
     print "%s, %s, %s" % (name,start,end)
 
   i = IntervalTree()
-  i.insert(5)
+
+# 1,3,4,5,6,8,10
+# use a mix of insert and load
+# to test the total functionality
+  i.insert(6)
+  i.insert(3)
   i.insert(3)
   i.insert(4)
-  i.insert(1)
-  i.insert(8)
-  i.insert(6)
-  i.insert(10)
-  i.inorder(debug)
-  i.inorder(drop)
+  i.load(1)
+  i.load(5)
+  i.load(8)
+  i.load(10)
 
+  i.unload()
+  print ""
+
+  i.inorder( debug2 )
+
+  # collect objects list
+  #objList = i.query( 1.5, 20.2)
 
 if __name__ == "__main__":
   main()

@@ -226,35 +226,28 @@ class IntervalTree:
     """
     Return a list of objects containing an endpoint
     """
-    val = {}
-    self.__accumulate__(self.head,endpoint,val)
-    return val.keys()
+    accumulator = {}
+    self.__accumulate__(self.head,endpoint,accumulator)
+    return accumulator.keys()
 
   def __accumulate__(self,node,endpoint,accumulator):
     """
-    Traverse the tree collecting references
-    NOTE: this is still buggy
+    Helper method for query_endpoint
     """
-    # base case
-    if (node.is_leaf()):
+    while (node!=None):
       for obj in node.objects:
         accumulator[obj] = True
-      return
-    # accumulate
-    if endpoint==node.value:
-      for obj in node.objects:
-        accumulator[obj] = True
-    # recurse
-    if endpoint <= node.value:
+      if node.is_leaf():
+        break
+      if endpoint < node.value:
+        node = node.left
+      elif endpoint > node.value:
+        node = node.right
+      else:
+        break
+    if node.is_leaf()==False:
       self.__accumulate__(node.left,endpoint,accumulator)
-    if endpoint >= node.value:
       self.__accumulate__(node.right,endpoint,accumulator)
-
-  def __span__(self,start,end,node):
-    """
-    Check if a node is inside the interval
-    """
-    return start <= node.value <= end
 
   def query_interval(self,start,end):
     """
